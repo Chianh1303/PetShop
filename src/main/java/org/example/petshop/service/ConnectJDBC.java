@@ -1,4 +1,4 @@
-package org.example.petshop;
+package org.example.petshop.service;
 
 import java.net.URI;
 import java.sql.Connection;
