@@ -18,6 +18,7 @@ public class ConnectJDBC {
             connection.close();
         } catch (SQLException e) {
             System.out.println("Lỗi kết nối: " + e.getMessage());
+            System.out.println("<<<<<");
         }
     }
 
