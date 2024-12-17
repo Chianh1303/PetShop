@@ -2,7 +2,10 @@ package org.example.petshop.service;
 
 import org.example.petshop.model.User;
 
+import javax.servlet.http.HttpServletRequest;
+
 public interface UserService {
-    boolean registerUser(User user); // Xử lý đăng ký người dùng
-    boolean isEmailExist(String email); // Kiểm tra email đã tồn tại chưa
+   User login(HttpServletRequest req, String email, String password);
+
+   void register(User user);
 }
