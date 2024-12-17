@@ -1,20 +1,20 @@
 package org.example.petshop.model;
 
 public class User {
-    private int id;
-    private String username;
+    private int userID;
+    private String userName;
     private String password;
     private String state;
     private String phoneNumber;
     private String email;
     private String address;
     private String role;
-
     public User() {
     }
 
-    public User(String username, String password, String state, String phoneNumber, String email, String address, String role) {
-        this.username = username;
+    public User(int userID, String userName, String password, String state, String phoneNumber, String email, String address, String role) {
+        this.userID = userID;
+        this.userName = userName;
         this.password = password;
         this.state = state;
         this.phoneNumber = phoneNumber;
@@ -23,9 +23,8 @@ public class User {
         this.role = role;
     }
 
-    public User(int id, String username, String password, String state, String phoneNumber, String email, String address, String role) {
-        this.id = id;
-        this.username = username;
+    public User(String userName, String password, String state, String phoneNumber, String email, String address, String role) {
+        this.userName = userName;
         this.password = password;
         this.state = state;
         this.phoneNumber = phoneNumber;
@@ -34,20 +33,20 @@ public class User {
         this.role = role;
     }
 
-    public int getId() {
-        return id;
+    public int getUserID() {
+        return userID;
     }
 
-    public void setId(int id) {
-        this.id = id;
+    public void setUserID(int userID) {
+        this.userID = userID;
     }
 
-    public String getUsername() {
-        return username;
+    public String getUserName() {
+        return userName;
     }
 
-    public void setUsername(String username) {
-        this.username = username;
+    public void setUserName(String userName) {
+        this.userName = userName;
     }
 
     public String getPassword() {
@@ -101,8 +100,8 @@ public class User {
     @Override
     public String toString() {
         return "User{" +
-                "id=" + id +
-                ", username='" + username + '\'' +
+                "userID=" + userID +
+                ", userName='" + userName + '\'' +
                 ", password='" + password + '\'' +
                 ", state='" + state + '\'' +
                 ", phoneNumber='" + phoneNumber + '\'' +
@@ -112,4 +111,3 @@ public class User {
                 '}';
     }
 }
-
