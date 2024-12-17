@@ -13,25 +13,27 @@
 
 <div class="container" id="container">
     <div class="form-container sign-up">
-        <form>
+        <form method="post" action="login">
             <h1>Tạo tài khoản</h1>
-            <input type="text" placeholder="Username">
-            <input type="text" placeholder="PhoneNumber">
-            <input type="email" placeholder="Email">
-            <input type="text" placeholder="Address">
-            <input type="password" placeholder="Password">
-            <input type="password" placeholder="Confirm Password">
+            <input type="text" name="userName" placeholder="Username" required maxlength="10">
+            <input type="number" name="phoneNumber" placeholder="PhoneNumber" required>
+            <input type="email" name="email" placeholder="Email" required>
+            <input type="text" name="address" placeholder="Address" required>
+            <input type="password" name="password" placeholder="Password" required>
+            <input type="password" name="password" placeholder="Confirm Password" required>
+            <input type="hidden" name="action" value="register">
             <button>Đăng ký</button>
         </form>
     </div>
     <div class="form-container sign-in">
         <form method="post" action="login">
             <h1>Đăng nhập</h1>
-            <input type="text" name="userName"  placeholder="Username">
+            <input type="text" name="userName" placeholder="Username">
             <input type="password" name="password" placeholder="Password">
             <input type="hidden" name="action" value="login">
             <button type="submit">Đăng nhập</button>
         </form>
+
     </div>
     <div class="toggle-container">
         <div class="toggle">

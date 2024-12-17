@@ -8,4 +8,5 @@ public interface UserService {
    User login(HttpServletRequest req, String email, String password);
 
    void register(User user);
+
 }
