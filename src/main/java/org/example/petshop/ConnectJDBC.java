@@ -1,21 +1,27 @@
 package org.example.petshop;
 
-import java.net.URI;
 import java.sql.Connection;
 import java.sql.DriverManager;
+import java.sql.PreparedStatement;
 import java.sql.SQLException;
 
 public class ConnectJDBC {
-    private static final String URL ="jdbc:mysql://localhost:3306/PetShop";
-    private static final String USERNAME ="root";
-    private static final String PASSWORD ="root@123";
-    public static Connection getConnection() throws SQLException {
-        try {
-            Class.forName("com.mysql.cj.jdbc.Driver");
-            return DriverManager.getConnection(URL, USERNAME, PASSWORD);
-        } catch (ClassNotFoundException e) {
-            throw new SQLException("Không thể tải lớp trình điều khiển JDBC", e);
-        }
+    public static void main(String[] args) {
+        String url = "jdbc:mysql://localhost:3306/PetShop";
+        String username = "root";
+        String password = "root@123";
 
+        try {
+            Connection connection = DriverManager.getConnection(url, username, password);
+            System.out.println("Kết nối thành công!");
+
+            connection.close();
+        } catch (SQLException e) {
+            System.out.println("Lỗi kết nối: " + e.getMessage());
+        }
+    }
+
+    public PreparedStatement prepareStatement(String sql) {
+        return null;
     }
 }

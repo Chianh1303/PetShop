@@ -12,7 +12,8 @@
 
 <div class="container" id="container">
     <div class="form-container sign-up">
-        <form>
+        <form  action="/signUp?action=search" method="get">
+
             <h1>Tạo tài khoản</h1>
             <input type="text" placeholder="Username">
             <input type="text" placeholder="PhoneNumber">
@@ -26,6 +27,7 @@
     <div class="form-container sign-in">
         <form>
             <h1>Đăng nhập</h1>
+            <p>    </p>
             <input type="text" placeholder="Username">
             <input type="password" placeholder="Password">
             <button>Đăng nhập</button>
@@ -49,6 +51,6 @@
     </div>
 </div>
 
-<script src="js.js"></script>
+<script src="java.js"></script>
 </body>
 </html>
