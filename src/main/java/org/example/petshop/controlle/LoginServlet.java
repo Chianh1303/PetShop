@@ -4,6 +4,7 @@ import org.example.petshop.model.User;
 import org.example.petshop.service.UserService;
 import org.example.petshop.service.UserServiceIpl;
 
+
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -30,11 +31,15 @@ public class LoginServlet extends HttpServlet {
                 case "logout":
                     HttpSession session = req.getSession();
                     session.invalidate();
-                    resp.sendRedirect("HTML/login.jsp");
+
+                    RequestDispatcher dispatcher = req.getRequestDispatcher("HTML/Login.jsp");
+                    dispatcher.forward(req, resp);
+
                     break;
             }
         }
     }
+
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         req.setCharacterEncoding("UTF-8");
@@ -53,11 +58,15 @@ public class LoginServlet extends HttpServlet {
                 registerAction(req, resp);
                 break;
             default:
-                resp.sendRedirect("HTML/Login.jsp");
+                RequestDispatcher dispatcher = req.getRequestDispatcher("HTML/Login.jsp");
+                dispatcher.forward(req, resp);
                 break;
         }
     }
+
     public final static UserService userService1 = new UserServiceIpl();
+
+
     private void loginAction(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         String userName = req.getParameter("userName");
         String password = req.getParameter("password");
@@ -66,7 +75,10 @@ public class LoginServlet extends HttpServlet {
         HttpSession session = req.getSession();
         if (user == null) {
             session.setAttribute("errorMessage", "Sai mật khẩu hoặc tài khoản không tồn tại.");
-            resp.sendRedirect("HTML/Login.jsp");
+
+            RequestDispatcher dispatcher = req.getRequestDispatcher("HTML/Login.jsp");
+            dispatcher.forward(req, resp);
+
         } else {
             System.out.println(user);
             session.setAttribute("user", user);
@@ -76,22 +88,28 @@ public class LoginServlet extends HttpServlet {
                     req.getRequestDispatcher("HTML/HomeAdmin.jsp").forward(req, resp);
                     break;
                 case "User":
-                    req.getRequestDispatcher("View/user/homeUser.jsp").forward(req, resp);
+
+                    req.getRequestDispatcher("HTML//HomeUser.jsp").forward(req, resp);
+
                     break;
             }
         }
     }
-    private void registerAction(HttpServletRequest req, HttpServletResponse resp) throws IOException {
-        String email = req.getParameter("email");
+
+
+    private void registerAction(HttpServletRequest req, HttpServletResponse resp) throws IOException, ServletException {
+        String userName = req.getParameter("userName");
         String password = req.getParameter("password");
-        String username = req.getParameter("username");
         String phoneNumber = req.getParameter("phoneNumber");
-        String state = req.getParameter("state");
+        String email = req.getParameter("email");
         String address = req.getParameter("address");
-        String role = req.getParameter("role");
-        User user = new User(username,password,state,email,phoneNumber,address , role);
+        String state = "Active";
+        String role = "User";
+        User user = new User(userName, password, state, email, phoneNumber, address, role);
         userService.register(user);
-        resp.sendRedirect("/login.jsp");
+         RequestDispatcher dispatcher = req.getRequestDispatcher("HTML/Login.jsp");
+        dispatcher.forward(req, resp);
+
     }
 
 

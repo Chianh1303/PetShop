@@ -1,3 +1,4 @@
+
 <%@ page import="java.sql.*" %>
 <%@ page import="org.example.petshop.ConnectJDBC" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
@@ -80,5 +81,6 @@
         </tbody>
     </table>
 </div>
+
 </body>
 </html>
