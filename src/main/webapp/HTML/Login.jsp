@@ -28,7 +28,9 @@
     <div class="form-container sign-in">
         <form method="post" action="login">
             <h1>Đăng nhập</h1>
+
             <input type="text" name="userName" placeholder="Username">
+
             <input type="password" name="password" placeholder="Password">
             <input type="hidden" name="action" value="login">
             <button type="submit">Đăng nhập</button>

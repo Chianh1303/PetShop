@@ -16,10 +16,12 @@ public class UserServiceIpl implements UserService {
         String query = "SELECT * FROM user WHERE LOWER(userName) = LOWER(?) AND password = ?";
         try (Connection connection = ConnectJDBC.getConnection();
              PreparedStatement preparedStatement = connection.prepareStatement(query)) {
+
             preparedStatement.setString(1, userName);
             preparedStatement.setString(2, password);
             ResultSet rs = preparedStatement.executeQuery();
             if (rs.next()) {
+
                 int userID = rs.getInt("userID");
                 String username = rs.getString("userName");
                 String role = rs.getString("role");
@@ -27,6 +29,7 @@ public class UserServiceIpl implements UserService {
                 String phoneNumber = rs.getString("phoneNumber");
                 String state = rs.getString("state");
                 String email = rs.getString("email");
+
                 User user = new User(userID, username, password, state, phoneNumber, email, address, role);
                 HttpSession session = req.getSession(true);
                 session.setAttribute("loggedInUser", user);
@@ -37,6 +40,7 @@ public class UserServiceIpl implements UserService {
                     case "user":
                         session.setAttribute("User", true);
                         break;
+
                 }
                 return user;
             }
@@ -47,6 +51,7 @@ public class UserServiceIpl implements UserService {
             return null;
         }
     }
+
     @Override
     public void register(User user) {
         String query = "INSERT INTO user (userName, password,state, email, phoneNumber, address, role) values (?,?,?,?,?,?,?)";
@@ -64,6 +69,7 @@ public class UserServiceIpl implements UserService {
             throw new RuntimeException(e);
         }
     }
+
 
 
 
