@@ -17,6 +17,17 @@ public class Product {
         this.image = image;
     }
 
+    public Product(String productName, int quantity, String description, double price, String image) {
+        this.productName = productName;
+        this.quantity = quantity;
+        this.description = description;
+        this.price = price;
+        this.image = image;
+    }
+
+    public Product() {
+    }
+
     public int getProductId() {
         return productId;
     }
@@ -71,7 +82,7 @@ public class Product {
                 "productId=" + productId +
                 ", productName='" + productName + '\'' +
                 ", quantity=" + quantity +
-                ", discription='" + description + '\'' +
+                ", description='" + description + '\'' +
                 ", price=" + price +
                 ", image='" + image + '\'' +
                 '}';
