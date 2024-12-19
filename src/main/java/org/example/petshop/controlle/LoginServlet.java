@@ -1,10 +1,12 @@
 package org.example.petshop.controlle;
 
+import org.example.petshop.model.Product;
 import org.example.petshop.model.User;
 import org.example.petshop.service.UserService;
 import org.example.petshop.service.UserServiceIpl;
 
 
+import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -12,6 +14,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.io.IOException;
+import java.util.List;
 
 @WebServlet("/login")
 public class LoginServlet extends HttpServlet {
@@ -36,7 +39,23 @@ public class LoginServlet extends HttpServlet {
                     dispatcher.forward(req, resp);
 
                     break;
+                default:
+                    getProductList(req, resp);
+                    break;
             }
+        }
+    }
+    private void getProductList(HttpServletRequest request, HttpServletResponse response) {
+        List<Product> products = this.userService.getProductList();
+        request.setAttribute("products", products);
+
+        RequestDispatcher dispatcher = request.getRequestDispatcher("HTML/User.jsp");
+        try {
+            dispatcher.forward(request, response);
+        } catch (ServletException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
         }
     }
 
@@ -56,6 +75,9 @@ public class LoginServlet extends HttpServlet {
                 break;
             case "register":
                 registerAction(req, resp);
+                break;
+            case "updatePet":
+                updatePetAction(req, resp);
                 break;
             default:
                 RequestDispatcher dispatcher = req.getRequestDispatcher("HTML/Login.jsp");
@@ -107,9 +129,34 @@ public class LoginServlet extends HttpServlet {
         String role = "User";
         User user = new User(userName, password, state, email, phoneNumber, address, role);
         userService.register(user);
-         RequestDispatcher dispatcher = req.getRequestDispatcher("HTML/Login.jsp");
+        RequestDispatcher dispatcher = req.getRequestDispatcher("HTML/Login.jsp");
         dispatcher.forward(req, resp);
 
+    }
+
+
+    private void updatePetAction(HttpServletRequest req, HttpServletResponse resp) throws IOException, ServletException {
+        try {
+            HttpSession session = req.getSession();
+            Integer productID = (Integer) session.getAttribute("productID");
+
+            if (productID == null) {
+                throw new IllegalArgumentException("Product ID is missing from session.");
+            }
+
+            String productName = req.getParameter("productName");
+            int quantity = Integer.parseInt(req.getParameter("quantity"));
+            String description = req.getParameter("description");
+            double price = Double.parseDouble(req.getParameter("price"));
+            String image = req.getParameter("image");
+
+            userService.updatePet(productID, productName, quantity, description, price, image);
+
+            resp.sendRedirect(req.getContextPath() + "/HTML/HomeAdmin.jsp");
+        } catch (Exception e) {
+            e.printStackTrace();
+            resp.sendRedirect(req.getContextPath() + "/HTML/errorUpadate.jsp");
+        }
     }
 
 

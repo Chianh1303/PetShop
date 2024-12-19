@@ -1,4 +1,3 @@
-
 <%@ page import="java.sql.*" %>
 <%@ page import="org.example.petshop.ConnectJDBC" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
@@ -8,7 +7,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Quản Lý Sản Phẩm</title>
-    <link rel="stylesheet" href="CSS/Admin.css">
+    <link rel="stylesheet" href="/CSS/Admin.css">
 </head>
 <body>
 <header>
@@ -27,10 +26,12 @@
         <tr>
             <th>ID</th>
             <th>Tên Sản Phẩm</th>
-            <th>Mô Tả</th>
+            <th>Mô tả</th>
             <th>Giá</th>
             <th>Số Lượng</th>
             <th>Hình Ảnh</th>
+            <th>Action</th>
+
         </tr>
         </thead>
         <tbody>
@@ -49,22 +50,41 @@
             <td><%= rs.getString("productName") != null ? rs.getString("productName") : "N/A" %>
             </td>
 
-            <td><%= rs.getInt("quantity") %></td>
-            <td><%= rs.getString("discription") != null ? rs.getString("discription") : "N/A" %>
+            <td><%= rs.getString("description") != null ? rs.getString("description") : "N/A" %>
+            </td>
             <td>
                 <%
                     double price = rs.getDouble("price");
                     if (!rs.wasNull()) { %>
-                <%= price %> VND
+                <%= price %> $
                 <% } else { %>
                 N/A
                 <% } %>
+
             </td>
+            <td><%= rs.getInt("quantity") %>
             </td>
             <td>
                 <img src="<%= rs.getString("image") != null ? rs.getString("image") : "no_image.jpg" %>"
                      alt="Hình ảnh" width="50" height="50">
             </td>
+            <td>
+                <form action="HTML/edit_product.jsp" method="post" style="display:inline;">
+                    <input type="hidden" name="productId" value="<%= rs.getInt("productId") %>">
+                    <button type="submit"
+                            style="background-color: #ffc107; color: white; border: none; padding: 5px 10px; cursor: pointer;">
+                        Sửa
+                    </button>
+                </form>
+                <form action="delete_product.jsp" method="post" style="display:inline;">
+                    <input type="hidden" name="productId" value="<%= rs.getInt("productId") %>">
+                    <button type="submit"
+                            style="background-color: #dc3545; color: white; border: none; padding: 5px 10px; cursor: pointer;">
+                        Xoá
+                    </button>
+                </form>
+            </td>
+
         </tr>
         <%
                     }
