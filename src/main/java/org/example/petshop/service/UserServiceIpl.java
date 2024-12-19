@@ -125,7 +125,7 @@ public class UserServiceIpl implements UserService {
             pstmt.setString(5, product.getImage());
             pstmt.setInt(6, product.getProductId());
 
-            //cc
+            //cctamngua
             return pstmt.executeUpdate() > 0;
         } catch (SQLException e) {
             throw new RuntimeException(e);
