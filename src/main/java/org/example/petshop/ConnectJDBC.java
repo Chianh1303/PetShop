@@ -8,7 +8,7 @@ import java.sql.SQLException;
 public class ConnectJDBC {
     private static final String URL ="jdbc:mysql://localhost:3306/petshop";
     private static final String USERNAME ="root";
-    private static final String PASSWORD ="linhnhi234";
+    private static final String PASSWORD ="root@123";
     public static Connection getConnection() throws SQLException {
         try {
             Class.forName("com.mysql.cj.jdbc.Driver");

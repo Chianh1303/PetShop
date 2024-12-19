@@ -37,11 +37,11 @@
         %>
         <tr>
             <td><%= rs.getInt("id") %></td>
-            <td><%= rs.getString("name") %></td>
+            <td><%= rs.getString("nameProduct") %></td>
             <td><%= rs.getString("description") %></td>
             <td><%= rs.getDouble("price") %></td>
             <td><%= rs.getInt("quantity") %></td>
-            <td><img src="<%= rs.getString("image_url") %>" alt="Image" width="50"></td>
+            <td><img src="<%= rs.getString("image") %>" alt="Image" width="50"></td>
             <td>
                 <a href="edit_product.jsp?id=<%= rs.getInt("id") %>">Sửa</a> |
                 <a href="delete_product.jsp?id=<%= rs.getInt("id") %>">Xóa</a>
