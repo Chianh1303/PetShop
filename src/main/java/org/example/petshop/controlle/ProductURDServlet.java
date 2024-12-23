@@ -23,19 +23,17 @@ public class ProductURDServlet extends HttpServlet {
         resp.setContentType("text/html; charset=UTF-8");
 
         String action = req.getParameter("action");
-        System.out.println(action);
+        System.out.println(action + 1111);
         if (action == null) {
-            action = "";
+            action = " ";
         }
         switch (action) {
+
             case "edit":
                 editProductAction(req, resp);
                 break;
             case "add":
                 addUserAction(req, resp);
-                break;
-            default:
-                showAllUser(req, resp);
                 break;
         }
     }
@@ -46,10 +44,11 @@ public class ProductURDServlet extends HttpServlet {
             req.setAttribute("products", products);
             RequestDispatcher dispatcher = req.getRequestDispatcher("/HTML/HomeAdmin.jsp");
             dispatcher.forward(req, resp);
-        } catch (ServletException | IOException e) {
+        } catch (IOException e) {
             e.printStackTrace();
         }
     }
+
 
     private void editProductAction(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         int productId = Integer.parseInt(req.getParameter("productId"));
@@ -72,7 +71,7 @@ public class ProductURDServlet extends HttpServlet {
         String image = req.getParameter("image");
         Product product = new Product(productName, quantity, description, price, image);
         userService.addUser(product);
-        RequestDispatcher dispatcher = req.getRequestDispatcher("/HTML/HomeAdmin.jsp");
+        showAllUser(req,resp);
     }
 
     @Override
@@ -81,11 +80,20 @@ public class ProductURDServlet extends HttpServlet {
         resp.setCharacterEncoding("UTF-8");
         resp.setContentType("text/html; charset=UTF-8");
         String action = req.getParameter("action");
+        System.out.println(action + 1111);
+
         if (action == null) {
             action = "";
         }
+//        if (req.getSession(false) != null) {
+//            req.getSession().invalidate();
+//        }
+
         switch (action) {
-            case "edit":
+            case "showAll":
+                showAllProductAction(req, resp);
+                break;
+            case "showEdit":
                 showEditProduct(req, resp);
                 break;
             default:
@@ -93,13 +101,26 @@ public class ProductURDServlet extends HttpServlet {
                 break;
         }
     }
-
+    private void showAllProductAction(HttpServletRequest request, HttpServletResponse response) throws
+            ServletException {
+        try {
+            List<Product> foodList = userService.getAllProductItems();
+            request.setAttribute("product", foodList);
+            RequestDispatcher dispatcher = request.getRequestDispatcher("/HTML/Userlist.jsp");
+            dispatcher.forward(request, response);
+        } catch (ServletException e) {
+            throw new RuntimeException(e);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+    }
     private void showEditProduct(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         int productId = Integer.parseInt(req.getParameter("productID"));
         System.out.println(productId);
         Product product = userService.getUserById(productId);
         req.setAttribute("product", product);
-        RequestDispatcher dispatcher = req.getRequestDispatcher("HTML/edit_product.jsp");
+        RequestDispatcher dispatcher = req.getRequestDispatcher("/HTML/edit_product.jsp");
         dispatcher.forward(req, resp);
     }
+
 }

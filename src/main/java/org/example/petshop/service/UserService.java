@@ -20,4 +20,6 @@ public interface UserService {
     void updateProduct(Product updatedProduct);
 
     List<Product> getAllProducts();
+
+    List<Product> getAllProductItems();
 }

@@ -121,6 +121,7 @@ public class UserServiceIpl implements UserService {
             pstmt.setString(5, product.getImage());
             pstmt.setInt(6, product.getProductId());
             pstmt.executeUpdate();
+
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
@@ -129,21 +130,46 @@ public class UserServiceIpl implements UserService {
     public List<Product> getAllProducts() {
         List<Product> products = new ArrayList<>();
         try (Connection conn = ConnectJDBC.getConnection()) {
-                Statement stmt = conn.createStatement();
-                ResultSet rs = stmt.executeQuery("SELECT * FROM Pet");
-                while (rs.next()) {
-                    int productId = rs.getInt("productId");
-                    String productName = rs.getString("productName");
-                    int quantity = rs.getInt("quantity");
-                    String description = rs.getString("description");
-                    double price = rs.getDouble("price");
-                    String image = rs.getString("image");
-                    Product product = new Product(productId, productName, quantity, description, price, image);
-                    products.add(product);
+            Statement stmt = conn.createStatement();
+            ResultSet rs = stmt.executeQuery("SELECT * FROM Pet");
+            while (rs.next()) {
+                int productId = rs.getInt("productId");
+                String productName = rs.getString("productName");
+                int quantity = rs.getInt("quantity");
+                String description = rs.getString("description");
+                double price = rs.getDouble("price");
+                String image = rs.getString("image");
+                Product product = new Product(productId, productName, quantity, description, price, image);
+                products.add(product);
             }
         } catch (Exception e) {
             e.printStackTrace();
         }
         return products;
+    }
+    public List<Product> getAllProductItems() {
+        List<Product> foodList = new ArrayList<>();
+        String query = "SELECT * FROM Pet";
+
+        try (Connection conn = ConnectJDBC.getConnection();
+             Statement stmt = conn.createStatement();
+             ResultSet resultSet = stmt.executeQuery(query)) {
+
+            while (resultSet.next()) {
+                int productId = resultSet.getInt("productId");
+                String productName = resultSet.getString("productName");
+                String description = resultSet.getString("description");
+                int quantity = resultSet.getInt("quantity");
+                double price = resultSet.getDouble("price");
+                String image = resultSet.getString("image");
+                System.out.println("productId: " + productId + ", productName: " + productName + ", quantity: " + quantity + ", description: " + description + ", price: " + price + ", image: " + image);
+                Product product = new Product(productId, productName, quantity, description, price, image);
+
+                foodList.add(product);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return foodList;
     }
 }

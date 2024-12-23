@@ -8,8 +8,8 @@
 }
 
 body {
-    background-color: #f8b500;
-    background: linear-gradient(to right, #f8b500, #fceabb);
+    background-size: cover;
+    background-image: url("https://images.careerviet.vn/content/images/hinh-nen-Noel-CareerBuilder-1.jpeg");
     display: flex;
     align-items: center;
     justify-content: center;

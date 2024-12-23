@@ -1,3 +1,4 @@
+
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <html>
 <head>
@@ -27,6 +28,7 @@
         <label for="image">Ảnh URL:</label>
         <input type="text" id="image" name="image" value="${product.image}">
     </div>
+
     <button type="submit">Sửa</button>
 </form>
 </body>

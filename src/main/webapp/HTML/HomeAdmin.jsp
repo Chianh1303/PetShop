@@ -1,4 +1,5 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <%@ page import="java.sql.*" %>
 <%@ page import="org.example.petshop.ConnectJDBC" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
@@ -15,8 +16,8 @@
     <h1>Trang Chủ Admin</h1>
     <nav>
         <a href="index.jsp">Quản Lý Sản Phẩm</a>
-        <a href="HTML/add_product.jsp">Thêm Sản Phẩm</a>
-        <a href="HTML/Login.jsp">Logout</a>
+        <a href="/HTML/add_product.jsp">Thêm Sản Phẩm</a>
+        <a href="/HTML/Login.jsp">Logout</a>
     </nav>
 </header>
 
@@ -25,7 +26,7 @@
     <table border="1">
         <thead>
         <tr>
-            <th>ID</th>
+            <th>#</th>
             <th>Tên sản phẩm</th>
             <th>Mô tả</th>
             <th>Giá</th>
@@ -35,13 +36,12 @@
         </tr>
         </thead>
         <tbody>
-        <c:forEach var="product" items="${products}">
+        <c:forEach var="product" items="${products}" varStatus="status">
             <tr>
-                <td>${product.productId}</td>
+                <td>${status.index+1}</td>
                 <td>${product.productName}</td>
                 <td>${product.description}</td>
-                <td>${product.price} VND</td>
-                    <%--                <td>${product.quantity}</td>--%>
+                <td> <fmt:formatNumber value="${product.price}" type="currency" currencySymbol="VND"></fmt:formatNumber> </td>
                 <td>
                     <c:choose> <c:when test="${product.quantity == 0}"> Hết hàng </c:when>
                         <c:otherwise> ${product.quantity} </c:otherwise> </c:choose>
@@ -55,7 +55,7 @@
                         <input type="hidden" name="productId">
                         <button type="submit"
                                 style="background-color: #ffc107; color: white; border: none; padding: 5px 10px; cursor: pointer;">
-                            <a href="/product?action=edit&productID=${product.productId}"> Sửa</a>
+                            <a href="/product?action=showEdit&productID=${product.productId}"> Sửa</a>
 
                         </button>
                     </form>
