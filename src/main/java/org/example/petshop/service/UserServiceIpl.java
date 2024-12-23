@@ -6,10 +6,7 @@ import org.example.petshop.model.User;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
+import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 public class UserServiceIpl implements UserService {
@@ -99,7 +96,7 @@ public class UserServiceIpl implements UserService {
                         String description = rs.getString("description");
                         double price = rs.getDouble("price");
                         String image = rs.getString("image");
-                        product = new Product(productName, quantity, description, price, image);
+                        product = new Product(productId,productName, quantity, description, price, image);
                     }
                 }
             } catch (SQLException e) {
@@ -113,22 +110,66 @@ public class UserServiceIpl implements UserService {
     }
 
     @Override
-    public boolean updateProduct(Product product) {
+    public void updateProduct(Product product) {
         String sql = "UPDATE pet SET productName = ?, quantity = ?, description = ?, price = ?, image = ? WHERE productId = ?";
         try (Connection connection = ConnectJDBC.getConnection();
              PreparedStatement pstmt = connection.prepareStatement(sql)) {
-
             pstmt.setString(1, product.getProductName());
             pstmt.setInt(2, product.getQuantity());
             pstmt.setString(3, product.getDescription());
             pstmt.setDouble(4, product.getPrice());
             pstmt.setString(5, product.getImage());
             pstmt.setInt(6, product.getProductId());
+            pstmt.executeUpdate();
 
-            //cc
-            return pstmt.executeUpdate() > 0;
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
+    }
+    @Override
+    public List<Product> getAllProducts() {
+        List<Product> products = new ArrayList<>();
+        try (Connection conn = ConnectJDBC.getConnection()) {
+            Statement stmt = conn.createStatement();
+            ResultSet rs = stmt.executeQuery("SELECT * FROM Pet");
+            while (rs.next()) {
+                int productId = rs.getInt("productId");
+                String productName = rs.getString("productName");
+                int quantity = rs.getInt("quantity");
+                String description = rs.getString("description");
+                double price = rs.getDouble("price");
+                String image = rs.getString("image");
+                Product product = new Product(productId, productName, quantity, description, price, image);
+                products.add(product);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return products;
+    }
+    public List<Product> getAllProductItems() {
+        List<Product> foodList = new ArrayList<>();
+        String query = "SELECT * FROM Pet";
+
+        try (Connection conn = ConnectJDBC.getConnection();
+             Statement stmt = conn.createStatement();
+             ResultSet resultSet = stmt.executeQuery(query)) {
+
+            while (resultSet.next()) {
+                int productId = resultSet.getInt("productId");
+                String productName = resultSet.getString("productName");
+                String description = resultSet.getString("description");
+                int quantity = resultSet.getInt("quantity");
+                double price = resultSet.getDouble("price");
+                String image = resultSet.getString("image");
+                System.out.println("productId: " + productId + ", productName: " + productName + ", quantity: " + quantity + ", description: " + description + ", price: " + price + ", image: " + image);
+                Product product = new Product(productId, productName, quantity, description, price, image);
+
+                foodList.add(product);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return foodList;
     }
 }
