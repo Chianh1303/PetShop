@@ -6,10 +6,7 @@ import org.example.petshop.model.User;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
+import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 public class UserServiceIpl implements UserService {
@@ -125,10 +122,35 @@ public class UserServiceIpl implements UserService {
             pstmt.setString(5, product.getImage());
             pstmt.setInt(6, product.getProductId());
 
-            //cc
             return pstmt.executeUpdate() > 0;
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
+    }
+    @Override
+    public List<Product> getAllProductItems() {
+        List<Product> foodList = new ArrayList<>();
+        String query = "SELECT * FROM Pet";
+
+        try (Connection conn = ConnectJDBC.getConnection();
+             Statement stmt = conn.createStatement();
+             ResultSet resultSet = stmt.executeQuery(query)) {
+
+            while (resultSet.next()) {
+                int productId = resultSet.getInt("productId");
+                String productName = resultSet.getString("productName");
+                String description = resultSet.getString("description");
+                int quantity = resultSet.getInt("quantity");
+                double price = resultSet.getDouble("price");
+                String image = resultSet.getString("image");
+                System.out.println("productId: " + productId + ", productName: " + productName + ", quantity: " + quantity + ", description: " + description + ", price: " + price + ", image: " + image);
+                Product product = new Product(productId, productName, quantity, description, price, image);
+
+                foodList.add(product);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return foodList;
     }
 }

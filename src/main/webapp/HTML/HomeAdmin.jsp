@@ -14,8 +14,7 @@
     <h1>Trang Chủ Admin</h1>
     <nav>
         <a href="index.jsp">Quản Lý Sản Phẩm</a>
-        <a href="add_product.jsp">Thêm Sản Phẩm</a>
-        <a href="#">Thống Kê</a>
+        <a href="HTML/add_product.jsp">Thêm Sản Phẩm</a>        <a href="#">Thống Kê</a>
     </nav>
 </header>
 

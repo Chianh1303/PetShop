@@ -1,5 +1,6 @@
 package org.example.petshop.controlle;
 
+import org.example.petshop.model.Product;
 import org.example.petshop.model.User;
 import org.example.petshop.service.UserService;
 import org.example.petshop.service.UserServiceIpl;
@@ -13,6 +14,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.io.IOException;
+import java.util.List;
 
 @WebServlet("/login")
 public class LoginServlet extends HttpServlet {
@@ -73,7 +75,7 @@ public class LoginServlet extends HttpServlet {
         HttpSession session = req.getSession();
         if (user == null) {
             session.setAttribute("errorMessage", "Sai mật khẩu hoặc tài khoản không tồn tại.");
-            RequestDispatcher dispatcher = req.getRequestDispatcher("HTML/Login.jsp");
+            RequestDispatcher dispatcher = req.getRequestDispatcher("/HTML/Login.jsp");
             dispatcher.forward(req, resp);
         } else {
             System.out.println(user);
@@ -84,7 +86,9 @@ public class LoginServlet extends HttpServlet {
                     req.getRequestDispatcher("HTML/HomeAdmin.jsp").forward(req, resp);
                     break;
                 case "User":
-                    req.getRequestDispatcher("HTML//HomeUser.jsp").forward(req, resp);
+                    List<Product> foodList = userService.getAllProductItems();
+                    req.setAttribute("product", foodList);
+                    req.getRequestDispatcher("/HTML/Userlist.jsp").forward(req, resp);
                     break;
             }
         }

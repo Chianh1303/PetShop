@@ -18,4 +18,6 @@ public interface UserService {
    Product getUserById(int id);
 
     boolean updateProduct(Product updatedProduct);
+
+    List<Product> getAllProductItems();
 }

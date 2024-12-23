@@ -10,6 +10,8 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.util.List;
+
 @WebServlet("/product")
 public class ProductURDServlet extends HttpServlet {
     public static final UserService userService = new UserServiceIpl();
@@ -24,6 +26,7 @@ public class ProductURDServlet extends HttpServlet {
             action = "";
         }
         switch (action) {
+
             case "edit":
                 editProductAction(req, resp);
                 break;
@@ -35,6 +38,7 @@ public class ProductURDServlet extends HttpServlet {
                 break;
         }
     }
+
     private void editProductAction(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         int productId = Integer.parseInt(req.getParameter("productId"));
 
@@ -73,8 +77,16 @@ public class ProductURDServlet extends HttpServlet {
         if (action == null) {
             action = "";
         }
+        if (req.getSession(false) != null) {
+            req.getSession().invalidate();
+        }
+        RequestDispatcher dispatcher = req.getRequestDispatcher("HTML/Login.jsp");
+        dispatcher.forward(req, resp);
+
 
         switch (action) {
+            case "showAll":
+                showAllProductAction(req, resp);
             case "showEdit":
                 showEditProduct(req, resp);
                 break;
@@ -84,6 +96,19 @@ public class ProductURDServlet extends HttpServlet {
             default:
                 resp.sendRedirect("HTML/HomeAdmin.jsp");
                 break;
+        }
+    }
+    private void showAllProductAction(HttpServletRequest request, HttpServletResponse response) throws
+            ServletException {
+        try {
+            List<Product> foodList = userService.getAllProductItems();
+            request.setAttribute("product", foodList);
+            RequestDispatcher dispatcher = request.getRequestDispatcher("/HTML/Userlist.jsp");
+            dispatcher.forward(request, response);
+        } catch (ServletException e) {
+            throw new RuntimeException(e);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
         }
     }
     private void showEditProduct(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
@@ -96,4 +121,6 @@ public class ProductURDServlet extends HttpServlet {
     private void updateProduct(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 
     }
+
+
 }
