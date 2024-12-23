@@ -17,5 +17,7 @@ public interface UserService {
 
    Product getUserById(int id);
 
-    boolean updateProduct(Product updatedProduct);
+    void updateProduct(Product updatedProduct);
+
+    List<Product> getAllProducts();
 }
