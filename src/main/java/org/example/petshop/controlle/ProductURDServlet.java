@@ -33,7 +33,11 @@ public class ProductURDServlet extends HttpServlet {
             case "add":
                 addUserAction(req, resp);
                 break;
+                case "search":
+                searchProductAction(req, resp);
+                break;
             default:
+                System.out.println("Invalid action: " + action);
                 resp.sendRedirect("HTML/HomeAdmin.jsp");
                 break;
         }
@@ -76,17 +80,17 @@ public class ProductURDServlet extends HttpServlet {
         String action = req.getParameter("action");
         if (action == null) {
             action = "";
-        }
-        if (req.getSession(false) != null) {
-            req.getSession().invalidate();
-        }
-        RequestDispatcher dispatcher = req.getRequestDispatcher("HTML/Login.jsp");
-        dispatcher.forward(req, resp);
 
-
+        }
+//        if (req.getSession(false) != null) {
+//            req.getSession().invalidate();
+//        }
+//        RequestDispatcher dispatcher = req.getRequestDispatcher("/HTML/Login.jsp");
+//        dispatcher.forward(req, resp);
         switch (action) {
             case "showAll":
                 showAllProductAction(req, resp);
+                break;
             case "showEdit":
                 showEditProduct(req, resp);
                 break;
@@ -94,8 +98,10 @@ public class ProductURDServlet extends HttpServlet {
                 updateProduct(req, resp);
                 break;
             default:
+                System.out.println("Invalid action: " + action);
                 resp.sendRedirect("HTML/HomeAdmin.jsp");
                 break;
+
         }
     }
     private void showAllProductAction(HttpServletRequest request, HttpServletResponse response) throws
@@ -121,6 +127,19 @@ public class ProductURDServlet extends HttpServlet {
     private void updateProduct(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 
     }
+private void searchProductAction(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+    String searchQuery = req.getParameter("searchQuery");
+    List<Product> products = userService.searchProductsByName(searchQuery);
+    System.out.println("Search query: " + searchQuery);
 
+    if (products.isEmpty()) {
+        req.setAttribute("message", "Không tìm thấy sản phẩm nào phù hợp!");
+    }
+    req.setAttribute("product", products);
+    RequestDispatcher dispatcher = req.getRequestDispatcher("/HTML/Userlist.jsp");
+    dispatcher.forward(req, resp);
 
 }
+}
+
+

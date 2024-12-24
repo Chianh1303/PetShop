@@ -20,4 +20,6 @@ public interface UserService {
     boolean updateProduct(Product updatedProduct);
 
     List<Product> getAllProductItems();
+
+    List<Product> searchProductsByName(String searchQuery);
 }

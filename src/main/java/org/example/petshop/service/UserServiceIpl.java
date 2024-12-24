@@ -153,4 +153,32 @@ public class UserServiceIpl implements UserService {
         }
         return foodList;
     }
+    public List<Product> searchProductsByName(String name) {
+    List<Product> productList = new ArrayList<>();
+    String query = "SELECT * FROM Pet WHERE productName LIKE ?";
+
+    try (Connection conn = ConnectJDBC.getConnection();
+    PreparedStatement stmt = conn.prepareStatement(query)) {
+
+        stmt.setString(1, "%" + name + "%");
+        ResultSet rs = stmt.executeQuery();
+
+        while (rs.next()) {
+            int productId = rs.getInt("productId");
+            String productName = rs.getString("productName");
+            String description = rs.getString("description");
+            int quantity = rs.getInt("quantity");
+            double price = rs.getDouble("price");
+            String image = rs.getString("image");
+            System.out.println("productId: " + productId + ", productName: " + productName + ", quantity: " + quantity + ", description: " + description + ", price: " + price + ", image: " + image);
+            Product product = new Product(productId, productName, quantity, description, price, image);
+
+            productList.add(product);
+        }
+    } catch (SQLException e) {
+        e.printStackTrace();
+    }
+
+    return productList;
+}
 }
