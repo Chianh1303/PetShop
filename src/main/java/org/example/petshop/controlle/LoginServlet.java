@@ -83,12 +83,10 @@ public class LoginServlet extends HttpServlet {
             System.out.println(user.getRole());
             switch (user.getRole()) {
                 case "Admin":
-                    req.getRequestDispatcher("HTML/HomeAdmin.jsp").forward(req, resp);
+                    resp.sendRedirect("/product");
                     break;
                 case "User":
-                    List<Product> foodList = userService.getAllProductItems();
-                    req.setAttribute("product", foodList);
-                    req.getRequestDispatcher("/HTML/Userlist.jsp").forward(req, resp);
+                    resp.sendRedirect("/user");
                     break;
             }
         }

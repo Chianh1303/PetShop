@@ -1,3 +1,5 @@
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <%@ page import="java.sql.*" %>
 <%@ page import="org.example.petshop.ConnectJDBC" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
@@ -14,92 +16,54 @@
     <h1>Trang Chủ Admin</h1>
     <nav>
         <a href="index.jsp">Quản Lý Sản Phẩm</a>
-        <a href="HTML/add_product.jsp">Thêm Sản Phẩm</a>        <a href="#">Thống Kê</a>
+        <a href="/HTML/add_product.jsp">Thêm Sản Phẩm</a>
+        <a href="/HTML/Login.jsp">Logout</a>
     </nav>
 </header>
 
 <div class="container">
     <h2>Danh Sách Sản Phẩm</h2>
-    <table>
+    <table border="1">
         <thead>
         <tr>
-            <th>ID</th>
-            <th>Tên Sản Phẩm</th>
+            <th>#</th>
+            <th>Tên sản phẩm</th>
             <th>Mô tả</th>
             <th>Giá</th>
-            <th>Số Lượng</th>
-            <th>Hình Ảnh</th>
-            <th>Action</th>
-
+            <th>Số lượng</th>
+            <th>Hình ảnh</th>
+            <th>Hanh dong</th>
         </tr>
         </thead>
         <tbody>
-        <%
-            try {
-                Connection conn = ConnectJDBC.getConnection();
-                if (conn != null) {
-                    Statement stmt = conn.createStatement();
-                    ResultSet rs = stmt.executeQuery("SELECT * FROM Pet");
+        <c:forEach var="product" items="${products}" varStatus="status">
+            <tr>
+                <td>${status.index+1}</td>
+                <td>${product.productName}</td>
+                <td>${product.description}</td>
+                <td> <fmt:formatNumber value="${product.price}" type="currency" currencySymbol="VND"></fmt:formatNumber> </td>
+                <td>
+                    <c:choose> <c:when test="${product.quantity == 0}"> Hết hàng </c:when>
+                        <c:otherwise> ${product.quantity} </c:otherwise> </c:choose>
+                </td>
 
-                    while (rs.next()) {
-        %>
-        <tr>
-            <td><%= rs.getInt("productId") %>
-            </td>
-            <td><%= rs.getString("productName") != null ? rs.getString("productName") : "N/A" %>
-            </td>
+                <td>
+                    <img src="${product.image}" alt="Hình ảnh" width="50" height="50">
+                </td>
+                <td>
+                    <form method="post" style="display:inline;">
+                        <input type="hidden" name="productId">
+                        <button type="submit"
+                                style="background-color: #ffc107; color: white; border: none; padding: 5px 10px; cursor: pointer;">
+                            <a href="/product?action=showEdit&productID=${product.productId}"> Sửa</a>
 
-            <td><%= rs.getString("description") != null ? rs.getString("description") : "N/A" %>
-            </td>
-            <td>
-                <%
-                    double price = rs.getDouble("price");
-                    if (!rs.wasNull()) { %>
-                <%= price %> $
-                <% } else { %>
-                N/A
-                <% } %>
-
-            </td>
-            <td><%= rs.getInt("quantity") %>
-            </td>
-            <td>
-                <img src="<%= rs.getString("image") != null ? rs.getString("image") : "no_image.jpg" %>"
-                     alt="Hình ảnh" width="50" height="50">
-            </td>
-            <td>
-                <form action="HTML/edit_product.jsp" method="post" style="display:inline;">
-                    <input type="hidden" name="productId" value="<%= rs.getInt("productId") %>">
-                    <button type="submit"
-                            style="background-color: #ffc107; color: white; border: none; padding: 5px 10px; cursor: pointer;">
-                        Sửa
-                    </button>
-                </form>
-                <form action="delete_product.jsp" method="post" style="display:inline;">
-                    <input type="hidden" name="productId" value="<%= rs.getInt("productId") %>">
-                    <button type="submit"
-                            style="background-color: #dc3545; color: white; border: none; padding: 5px 10px; cursor: pointer;">
-                        Xoá
-                    </button>
-                </form>
-            </td>
-
-        </tr>
-        <%
-                    }
-                    conn.close();
-                } else {
-                    System.out.println("không thể kết nối");
-                }
-            } catch (Exception e) {
-                e.printStackTrace();
-
-                System.out.println("có lỗi: " + e.getMessage() + "</td></tr>");
-            }
-        %>
+                        </button>
+                    </form>
+                </td>
+            </tr>
+        </c:forEach>
         </tbody>
     </table>
 </div>
-
 </body>
 </html>

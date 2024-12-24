@@ -113,7 +113,6 @@ td {
     margin: 20px 0;
 }
 
-/* Form tìm kiếm */
 .search-form {
     display: flex;
     align-items: center;
@@ -155,4 +154,129 @@ td {
 .search-button:hover {
     background-color: #0056b3;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+}
+.product-container {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px;
+    justify-content: center;
+}
+.product-card {
+    width: 250px;
+    background-color: #fff;
+    border-radius: 10px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    text-align: center;
+    transition: transform 0.3s;
+}
+.product-card:hover {
+    transform: translateY(-5px);
+}
+.product-card img {
+    width: 100%;
+    border-radius: 10px 10px 0 0;
+}
+.product-info {
+    padding: 15px;
+}
+.product-name {
+    font-size: 1rem;
+    font-weight: bold;
+}
+.product-price {
+    color: #e74c3c;
+    font-size: 1.2rem;
+    font-weight: bold;
+}
+.product-description {
+    font-size: 0.9rem;
+    color: #555;
+    margin-top: 10px;
+    transition: all 0.3s ease;
+}
+
+
+ .product-container {
+     display: flex;
+     flex-wrap: wrap;
+     gap: 20px;
+     justify-content: center;
+ }
+.product-card {
+    width: 250px;
+    background-color: #fff;
+    border-radius: 10px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    text-align: center;
+    transition: transform 0.3s;
+}
+.product-card:hover {
+    transform: translateY(-5px);
+}
+.product-card img {
+    width: 100%;
+    border-radius: 10px 10px 0 0;
+}
+.product-info {
+    padding: 15px;
+}
+.product-name {
+    font-size: 1rem;
+    font-weight: bold;
+}
+.product-price {
+    color: #e74c3c;
+    font-size: 1.2rem;
+    font-weight: bold;
+}
+.product-description {
+    font-size: 0.9rem;
+    color: #555;
+    margin-top: 10px;
+    transition: all 0.3s ease;
+}
+.title {
+    text-align: left;
+    font-size: 2.5rem;
+    margin-bottom: 20px;
+    color: #fff;
+}
+/*hiển thi chi tiet san pham và gio hang*/
+.product-description {
+    margin-top: 10px;
+    padding: 10px;
+    border-top: 1px solid #ddd;
+    background-color: #f9f9f9;
+}
+
+.cart-form {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-top: 10px;
+}
+
+.cart-form label {
+    font-size: 14px;
+}
+
+.cart-form input[type="number"] {
+    width: 60px;
+    padding: 5px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+}
+
+.add-to-cart-btn {
+    padding: 8px 12px;
+    background-color: #007bff;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.add-to-cart-btn:hover {
+    background-color: #0056b3;
 }

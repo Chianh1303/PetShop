@@ -33,15 +33,21 @@ public class ProductURDServlet extends HttpServlet {
             case "add":
                 addUserAction(req, resp);
                 break;
-                case "search":
-                searchProductAction(req, resp);
-                break;
-            default:
-                System.out.println("Invalid action: " + action);
-                resp.sendRedirect("HTML/HomeAdmin.jsp");
-                break;
+
         }
     }
+
+    private void showAllUser(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        try {
+            List<Product> products = userService.getAllProducts();
+            req.setAttribute("products", products);
+            RequestDispatcher dispatcher = req.getRequestDispatcher("/HTML/HomeAdmin.jsp");
+            dispatcher.forward(req, resp);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
 
     private void editProductAction(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         int productId = Integer.parseInt(req.getParameter("productId"));
@@ -52,15 +58,8 @@ public class ProductURDServlet extends HttpServlet {
         double price = Double.parseDouble(req.getParameter("price"));
         String image = req.getParameter("image");
         Product updatedProduct = new Product(productId, productName, quantity, description, price, image);
-        boolean isUpdated = userService.updateProduct(updatedProduct);
-        if (isUpdated) {
-            resp.sendRedirect("/product?action=showEdit&id=productId" + productId);
-        } else {
-            req.setAttribute("error", "Không thể sửa sản phẩm.");
-            req.setAttribute("product", updatedProduct);
-            RequestDispatcher dispatcher = req.getRequestDispatcher("HTML/edit_product.jsp");
-            dispatcher.forward(req, resp);
-        }
+        userService.updateProduct(updatedProduct);
+        showAllUser(req, resp);
     }
     private void addUserAction(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         String productName = req.getParameter("productName");
@@ -70,7 +69,7 @@ public class ProductURDServlet extends HttpServlet {
         String image = req.getParameter("image");
         Product product = new Product(productName, quantity, description, price, image);
         userService.addUser(product);
-        RequestDispatcher dispatcher = req.getRequestDispatcher("HTML/HomeAdmin.jsp");
+        showAllUser(req,resp);
     }
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
@@ -80,66 +79,32 @@ public class ProductURDServlet extends HttpServlet {
         String action = req.getParameter("action");
         if (action == null) {
             action = "";
-
         }
 //        if (req.getSession(false) != null) {
 //            req.getSession().invalidate();
 //        }
-//        RequestDispatcher dispatcher = req.getRequestDispatcher("/HTML/Login.jsp");
+//        RequestDispatcher dispatcher = req.getRequestDispatcher("HTML/Login.jsp");
 //        dispatcher.forward(req, resp);
+
+
         switch (action) {
-            case "showAll":
-                showAllProductAction(req, resp);
-                break;
             case "showEdit":
                 showEditProduct(req, resp);
                 break;
-            case "edit":
-                updateProduct(req, resp);
-                break;
             default:
-                System.out.println("Invalid action: " + action);
-                resp.sendRedirect("HTML/HomeAdmin.jsp");
+                showAllUser(req, resp);
                 break;
-
-        }
-    }
-    private void showAllProductAction(HttpServletRequest request, HttpServletResponse response) throws
-            ServletException {
-        try {
-            List<Product> foodList = userService.getAllProductItems();
-            request.setAttribute("product", foodList);
-            RequestDispatcher dispatcher = request.getRequestDispatcher("/HTML/Userlist.jsp");
-            dispatcher.forward(request, response);
-        } catch (ServletException e) {
-            throw new RuntimeException(e);
-        } catch (IOException e) {
-            throw new RuntimeException(e);
         }
     }
     private void showEditProduct(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        int productId = Integer.parseInt(req.getParameter("productId"));
+        int productId = Integer.parseInt(req.getParameter("productID"));
+        System.out.println(productId);
         Product product = userService.getUserById(productId);
         req.setAttribute("product", product);
         RequestDispatcher dispatcher = req.getRequestDispatcher("/HTML/edit_product.jsp");
         dispatcher.forward(req, resp);
     }
-    private void updateProduct(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 
-    }
-private void searchProductAction(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-    String searchQuery = req.getParameter("searchQuery");
-    List<Product> products = userService.searchProductsByName(searchQuery);
-    System.out.println("Search query: " + searchQuery);
-
-    if (products.isEmpty()) {
-        req.setAttribute("message", "Không tìm thấy sản phẩm nào phù hợp!");
-    }
-    req.setAttribute("product", products);
-    RequestDispatcher dispatcher = req.getRequestDispatcher("/HTML/Userlist.jsp");
-    dispatcher.forward(req, resp);
 
 }
-}
-
 
