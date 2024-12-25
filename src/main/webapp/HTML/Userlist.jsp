@@ -53,7 +53,6 @@
         margin-top: 10px;
         transition: all 0.3s ease;
     }
-
 </style>
 <body>
 <header>
@@ -65,7 +64,6 @@
         <a href="/HTML/Login.jsp" class="logout-btn">Logout</a>
     </nav>
 </header>
-
 <div>
     <form method="get">
         <h1 style="text-align: center">Danh sách sản phẩm</h1>
@@ -87,7 +85,6 @@
 
     </form>
 </div>
-
 <footer>
     <p>© 2024 Merry Christmas! All rights reserved. 🎄</p>
 </footer>

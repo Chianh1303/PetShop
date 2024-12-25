@@ -1,34 +1,42 @@
 body {
     font-family: Arial, sans-serif;
-    background-color: #f5f5f5;
+    background-image: url('https://proavl.vn/contents_images/images/Backdrop-giang-sinh-dep.jpg');
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
     margin: 0;
     padding: 0;
     display: flex;
     justify-content: center;
     align-items: center;
     height: 100vh;
+    color: #ffffff;
 }
 
 form {
-    background: #ffffff;
+    background: rgba(255, 255, 255, 0.9);
     border-radius: 8px;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
     padding: 20px 30px;
     width: 100%;
     max-width: 400px;
+    box-sizing: border-box;
 }
 
 form h1 {
     text-align: center;
     margin-bottom: 20px;
-    color: #333333;
+    color: #b22222;
+    font-size: 24px;
+    font-weight: bold;
+    text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.2);
 }
 
 form label {
     display: block;
     margin-bottom: 5px;
     font-weight: bold;
-    color: #555555;
+    color: #228b22;
 }
 
 form input {
@@ -39,16 +47,18 @@ form input {
     border-radius: 5px;
     box-sizing: border-box;
     font-size: 14px;
+    transition: border-color 0.3s ease, box-shadow 0.3s ease;
+    color: #333333;
 }
 
 form input:focus {
-    border-color: #007bff;
+    border-color: #ff4500;
     outline: none;
-    box-shadow: 0 0 3px rgba(0, 123, 255, 0.5);
+    box-shadow: 0 0 3px rgba(255, 69, 0, 0.5);
 }
 
 form button {
-    background-color: #28a745;
+    background-color: #ff6347;
     color: #ffffff;
     border: none;
     padding: 10px 15px;
@@ -56,16 +66,40 @@ form button {
     cursor: pointer;
     font-size: 16px;
     width: 100%;
+    transition: background-color 0.3s ease, transform 0.1s ease;
 }
 
 form button:hover {
-    background-color: #218838;
+    background-color: #dc143c;
 }
 
 form button:active {
-    background-color: #1e7e34;
+    background-color: #b22222;
+    transform: scale(0.98);
 }
 
 .form-group {
     margin-bottom: 15px;
+}
+
+@keyframes snow {
+    0% { transform: translateY(0); }
+    100% { transform: translateY(100vh); }
+}
+
+.snowflake {
+    position: fixed;
+    top: -10px;
+    font-size: 1rem;
+    color: white;
+    animation: snow 10s linear infinite;
+    opacity: 0.8;
+}
+
+.snowflake:nth-child(odd) {
+    animation-duration: 8s;
+}
+
+.snowflake:nth-child(even) {
+    animation-duration: 12s;
 }
