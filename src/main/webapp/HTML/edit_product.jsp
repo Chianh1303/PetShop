@@ -28,7 +28,7 @@
     </div>
     <div class="form-group">
         <label for="price">Giá:</label>
-        <input type="number" id="price" step="0.01" name="price" required value="${product.price}">
+        <input type="number" id="price" step="0.01" name="price" required value="${product.price}" max="10000000">
     </div>
     <div class="form-group">
         <label for="image">Ảnh URL:</label>

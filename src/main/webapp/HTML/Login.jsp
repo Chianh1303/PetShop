@@ -15,16 +15,17 @@
     <div class="form-container sign-up">
         <form method="post" action="login">
             <h1>Tạo tài khoản</h1>
-            <input type="text" name="userName" placeholder="Username" required maxlength="10">
-            <input type="number" name="phoneNumber" placeholder="PhoneNumber" required>
-            <input type="email" name="email" placeholder="Email" required>
+            <input type="text" name="userName" placeholder="Username" required pattern="^[a-zA-Z0-9]{3,10}$" title="Tên người dùng phải từ 3 đến 10 ký tự và chỉ chứa ký tự chữ và số.">
+            <input type="text" name="phoneNumber" placeholder="PhoneNumber" required pattern="^0\d{9}$" title="Số điện thoại phải có độ dài 10 số và bắt đầu bằng s 0.">
+            <input type="email" name="email" placeholder="Email" required pattern="^[\\w-\\.]+@([\\w-]+\\.)+[\\w-]{2,4}$" title="Địa chỉ email không hợp lệ.">
             <input type="text" name="address" placeholder="Address" required>
-            <input type="password" name="password" placeholder="Password" required>
-            <input type="password" name="password" placeholder="Confirm Password" required>
+            <input type="password" name="password" placeholder="Password" required >
+            <input type="password" name="confirmPassword" placeholder="Confirm Password" required>
             <input type="hidden" name="action" value="register">
             <button>Đăng ký</button>
         </form>
     </div>
+
     <div class="form-container sign-in">
         <form method="post" action="login">
             <h1>Đăng nhập</h1>
@@ -55,6 +56,6 @@
     </div>
 </div>
 
-<script src="java.js"></script>
+<script src="/JS/java.js"></script>
 </body>
 </html>

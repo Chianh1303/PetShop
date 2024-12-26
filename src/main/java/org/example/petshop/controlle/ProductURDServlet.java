@@ -23,9 +23,8 @@ public class ProductURDServlet extends HttpServlet {
         resp.setContentType("text/html; charset=UTF-8");
 
         String action = req.getParameter("action");
-        System.out.println(action + 1111);
         if (action == null) {
-            action = " ";
+            action = "";
         }
         switch (action) {
 
@@ -35,6 +34,11 @@ public class ProductURDServlet extends HttpServlet {
             case "add":
                 addUserAction(req, resp);
                 break;
+            case "search":
+                searchProductAction(req, resp);
+                break;
+
+
         }
     }
 
@@ -52,12 +56,12 @@ public class ProductURDServlet extends HttpServlet {
 
     private void editProductAction(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         int productId = Integer.parseInt(req.getParameter("productId"));
+
         String productName = req.getParameter("productName");
         int quantity = Integer.parseInt(req.getParameter("quantity"));
         String description = req.getParameter("description");
         double price = Double.parseDouble(req.getParameter("price"));
         String image = req.getParameter("image");
-        System.out.println("id  " + productId + "    tên   " + productName + "mô tả" + description + price + image);
         Product updatedProduct = new Product(productId, productName, quantity, description, price, image);
         userService.updateProduct(updatedProduct);
         showAllUser(req, resp);
@@ -71,7 +75,21 @@ public class ProductURDServlet extends HttpServlet {
         String image = req.getParameter("image");
         Product product = new Product(productName, quantity, description, price, image);
         userService.addUser(product);
-        showAllUser(req,resp);
+        showAllUser(req, resp);
+    }
+
+    private void searchProductAction(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        String searchQuery = req.getParameter("searchQuery");
+        List<Product> products = userService.searchProductsByName(searchQuery);
+        System.out.println("Search query: " + searchQuery);
+
+        if (products.isEmpty()) {
+            req.setAttribute("message", "Không tìm thấy sản phẩm nào phù hợp!");
+        }
+        req.setAttribute("product", products);
+        RequestDispatcher dispatcher = req.getRequestDispatcher("/HTML/HomeAdmin.jsp");
+        dispatcher.forward(req, resp);
+
     }
 
     @Override
@@ -80,40 +98,30 @@ public class ProductURDServlet extends HttpServlet {
         resp.setCharacterEncoding("UTF-8");
         resp.setContentType("text/html; charset=UTF-8");
         String action = req.getParameter("action");
-        System.out.println(action + 1111);
-
         if (action == null) {
             action = "";
         }
 //        if (req.getSession(false) != null) {
 //            req.getSession().invalidate();
 //        }
+//        RequestDispatcher dispatcher = req.getRequestDispatcher("HTML/Login.jsp");
+//        dispatcher.forward(req, resp);
+
 
         switch (action) {
-            case "showAll":
-                showAllProductAction(req, resp);
-                break;
             case "showEdit":
                 showEditProduct(req, resp);
+                break;
+            case "logout":
+                RequestDispatcher dispatcher = req.getRequestDispatcher("HTML/Login.jsp");
+                dispatcher.forward(req, resp);
                 break;
             default:
                 showAllUser(req, resp);
                 break;
         }
     }
-    private void showAllProductAction(HttpServletRequest request, HttpServletResponse response) throws
-            ServletException {
-        try {
-            List<Product> foodList = userService.getAllProductItems();
-            request.setAttribute("product", foodList);
-            RequestDispatcher dispatcher = request.getRequestDispatcher("/HTML/Userlist.jsp");
-            dispatcher.forward(request, response);
-        } catch (ServletException e) {
-            throw new RuntimeException(e);
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
-    }
+
     private void showEditProduct(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         int productId = Integer.parseInt(req.getParameter("productID"));
         System.out.println(productId);
@@ -123,4 +131,6 @@ public class ProductURDServlet extends HttpServlet {
         dispatcher.forward(req, resp);
     }
 
+
 }
+
