@@ -51,8 +51,8 @@ public class UserServlet extends HttpServlet {
     private void showAllProductAction(HttpServletRequest request, HttpServletResponse response) throws
             ServletException {
         try {
-            List<Product> foodList = userService.getAllProductItems();
-            request.setAttribute("product", foodList);
+            List<Product> productList = userService.getAllProductItems();
+            request.setAttribute("product", productList);
             RequestDispatcher dispatcher = request.getRequestDispatcher("/HTML/Userlist.jsp");
             dispatcher.forward(request, response);
         } catch (ServletException e) {
@@ -74,5 +74,5 @@ public class UserServlet extends HttpServlet {
         dispatcher.forward(req, resp);
 
     }
-    
+
 }

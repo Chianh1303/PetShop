@@ -1,6 +1,6 @@
 package org.example.petshop.model;
 
-public class Product {
+public class cartItem {
     private int productId;
     private String productName;
     private int quantity;
@@ -8,7 +8,7 @@ public class Product {
     private double price;
     private String image;
 
-    public Product(int productId, String productName, int quantity, String description, double price, String image) {
+    public cartItem(int productId, String productName, int quantity, String description, double price, String image) {
         this.productId = productId;
         this.productName = productName;
         this.quantity = quantity;
@@ -17,13 +17,6 @@ public class Product {
         this.image = image;
     }
 
-    public Product(String productName, int quantity, String description, double price, String image) {
-        this.productName = productName;
-        this.quantity = quantity;
-        this.description = description;
-        this.price = price;
-        this.image = image;
-    }
 
     public int getProductId() {
         return productId;
@@ -75,7 +68,7 @@ public class Product {
 
     @Override
     public String toString() {
-        return "Product{" +
+        return "cartItem{" +
                 "productId=" + productId +
                 ", productName='" + productName + '\'' +
                 ", quantity=" + quantity +
@@ -84,6 +77,4 @@ public class Product {
                 ", image='" + image + '\'' +
                 '}';
     }
-
-
 }

@@ -37,6 +37,7 @@ public class ProductURDServlet extends HttpServlet {
         }
     }
 
+
     private void showAllUser(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         try {
             List<Product> products = userService.getAllProducts();

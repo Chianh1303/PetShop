@@ -4,7 +4,6 @@ import org.example.petshop.model.Product;
 import org.example.petshop.model.User;
 
 import javax.servlet.http.HttpServletRequest;
-import java.sql.SQLException;
 import java.util.List;
 
 public interface UserService {
@@ -13,7 +12,10 @@ public interface UserService {
    void register(User user);
 
 
-   public void addUser(Product product);
+
+    void addProductToCart(Product product);
+
+    public void addUser(Product product);
 
    Product getUserById(int id);
 

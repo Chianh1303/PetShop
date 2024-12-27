@@ -63,6 +63,25 @@ public class UserServiceIpl implements UserService {
             throw new RuntimeException(e);
         }
     }
+
+    @Override
+    public void addProductToCart(Product product) {
+        String sql = "insert into Cart (productId, productName, quantity, description ,price, image) value (?,?,?,?,?,?)";
+        try {
+            Connection connection = ConnectJDBC.getConnection();
+            PreparedStatement pstm = connection.prepareStatement(sql);
+            pstm.setInt(1, product.getProductId());
+            pstm.setString(2, product.getProductName());
+            pstm.setInt(3, product.getQuantity());
+            pstm.setString(4, product.getDescription());
+            pstm.setDouble(5, product.getPrice());
+            pstm.setString(6, product.getImage());
+            pstm.execute();
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+
+    }
     @Override
     public void addUser(Product product) {
         String sql = "insert into pet (productName, quantity, description ,price, image) value (?,?,?,?,?)";
@@ -148,7 +167,7 @@ public class UserServiceIpl implements UserService {
         return products;
     }
     public List<Product> getAllProductItems() {
-        List<Product> foodList = new ArrayList<>();
+        List<Product> productList = new ArrayList<>();
         String query = "SELECT * FROM Pet";
 
         try (Connection conn = ConnectJDBC.getConnection();
@@ -165,12 +184,12 @@ public class UserServiceIpl implements UserService {
                 System.out.println("productId: " + productId + ", productName: " + productName + ", quantity: " + quantity + ", description: " + description + ", price: " + price + ", image: " + image);
                 Product product = new Product(productId, productName, quantity, description, price, image);
 
-                foodList.add(product);
+                productList.add(product);
             }
         } catch (SQLException e) {
             e.printStackTrace();
         }
-        return foodList;
+        return productList;
     }
     public List<Product> searchProductsByName(String name) {
     List<Product> productList = new ArrayList<>();
