@@ -6,6 +6,12 @@
     <link rel="stylesheet" href="/CSS/edit.css">
 </head>
 <body>
+<div class="snowflake">❄</div>
+<div class="snowflake">❅</div>
+<div class="snowflake">❆</div>
+<div class="snowflake">❄</div>
+<div class="snowflake">❅</div>
+<div class="snowflake">❆</div>
 <form action="/product?action=edit&productId=${product.productId}" method="post">
     <h1>Chỉnh sửa sản phẩm</h1>
     <div class="form-group">
@@ -22,7 +28,7 @@
     </div>
     <div class="form-group">
         <label for="price">Giá:</label>
-        <input type="number" id="price" step="0.01" name="price" required value="${product.price}">
+        <input type="number" id="price" step="0.01" name="price" required value="${product.price}" max="10000000">
     </div>
     <div class="form-group">
         <label for="image">Ảnh URL:</label>

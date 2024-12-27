@@ -22,4 +22,8 @@ public interface UserService {
     List<Product> getAllProducts();
 
     List<Product> getAllProductItems();
+
+    List<Product> searchProductsByName(String searchQuery);
+
+    boolean isUserExists(String userName, String email);
 }

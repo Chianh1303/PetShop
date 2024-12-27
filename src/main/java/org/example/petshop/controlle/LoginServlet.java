@@ -21,26 +21,28 @@ public class LoginServlet extends HttpServlet {
     private final UserService userService = new UserServiceIpl();
     private HttpServletRequest req;
     private HttpServletResponse resp;
-    @Override
-    protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        req.setCharacterEncoding("UTF-8");
-        resp.setCharacterEncoding("UTF-8");
-        resp.setContentType("text/html; charset=UTF-8");
-        req.setCharacterEncoding("UTF-8");
-        resp.setCharacterEncoding("UTF-8");
-        resp.setContentType("text/html; charset=UTF-8");
-        String action = req.getParameter("action");
-        if (action == null) {
-            switch (action) {
-                case "logout":
-                    HttpSession session = req.getSession();
-                    session.invalidate();
-                    RequestDispatcher dispatcher = req.getRequestDispatcher("HTML/Login.jsp");
-                    dispatcher.forward(req, resp);
-                    break;
-            }
-        }
-    }
+
+//    @Override
+//    protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+//        req.setCharacterEncoding("UTF-8");
+//        resp.setCharacterEncoding("UTF-8");
+//        resp.setContentType("text/html; charset=UTF-8");
+//        req.setCharacterEncoding("UTF-8");
+//        resp.setCharacterEncoding("UTF-8");
+//        resp.setContentType("text/html; charset=UTF-8");
+//        String action = req.getParameter("action");
+//        if (action == null)
+//            action = "";
+//
+//
+//        switch (action) {
+//            case "logout":
+//                RequestDispatcher dispatcher = req.getRequestDispatcher("HTML/Login.jsp");
+//                dispatcher.forward(req, resp);
+//                break;
+//        }
+//    }
+
 
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
@@ -59,12 +61,14 @@ public class LoginServlet extends HttpServlet {
             case "register":
                 registerAction(req, resp);
                 break;
+
             default:
                 RequestDispatcher dispatcher = req.getRequestDispatcher("HTML/Login.jsp");
                 dispatcher.forward(req, resp);
                 break;
         }
     }
+
     public final static UserService userService1 = new UserServiceIpl();
 
     private void loginAction(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
@@ -86,25 +90,70 @@ public class LoginServlet extends HttpServlet {
                     resp.sendRedirect("/product");
                     break;
                 case "User":
-                    List<Product> foodList = userService.getAllProductItems();
-                    req.setAttribute("product", foodList);
-                    req.getRequestDispatcher("/HTML/Userlist.jsp").forward(req, resp);
+                    resp.sendRedirect("/user");
                     break;
             }
         }
     }
+
     private void registerAction(HttpServletRequest req, HttpServletResponse resp) throws IOException, ServletException {
         String userName = req.getParameter("userName");
         String password = req.getParameter("password");
         String phoneNumber = req.getParameter("phoneNumber");
         String email = req.getParameter("email");
         String address = req.getParameter("address");
+
+        if (!userName.matches("^[a-zA-Z0-9]{3,20}$")) {
+            req.setAttribute("errorMessage", "Tên người dùng phải từ 3 đến 10 ký tự và chỉ chứa ký tự chữ và số.");
+            forwardToRegisterPage(req, resp);
+            return;
+        }
+        if (!phoneNumber.matches("^0\\d{9}$")) {
+            req.setAttribute("errorMessage", "Số điện thoại phải có 10 số và bắt đầu bằng số 0.");
+            forwardToRegisterPage(req, resp);
+            return;
+        }
+        if (!email.matches("^[\\w-\\.]+@([\\w-]+\\.)+[\\w-]{2,4}$")) {
+            req.setAttribute("errorMessage", "Địa chỉ email không hợp lệ.");
+            forwardToRegisterPage(req, resp);
+            return;
+        }
+        if (!password.matches("^(?=.*[A-Za-z])(?=.*\\d)[A-Za-z\\d]{8,}$")) {
+            req.setAttribute("errorMessage", "Mật khẩu phải có ít nhất 8 ký tự, chứa ít nhất một chữ cái và một số.");
+            forwardToRegisterPage(req, resp);
+            return;
+        }
+        if (address == null || address.isEmpty()) {
+            req.setAttribute("errorMessage", "Vui lòng nhập địa chỉ.");
+            forwardToRegisterPage(req, resp);
+            return;
+        }
+
         String state = "Active";
         String role = "User";
         User user = new User(userName, password, state, email, phoneNumber, address, role);
-        userService.register(user);
-         RequestDispatcher dispatcher = req.getRequestDispatcher("HTML/Login.jsp");
+
+        try {
+            if (userService.isUserExists(userName, email)) {
+                req.setAttribute("errorMessage", "Tên người dùng hoặc email đã tồn tại.");
+                forwardToRegisterPage(req, resp);
+                return;
+            }
+
+            userService.register(user);
+            req.setAttribute("successMessage", "Đăng ký thành công. Vui lòng đăng nhập.");
+            RequestDispatcher dispatcher = req.getRequestDispatcher("HTML/Login.jsp");
+            dispatcher.forward(req, resp);
+        } catch (Exception e) {
+            req.setAttribute("errorMessage", "Có lỗi xảy ra. Vui lòng thử lại sau.");
+            forwardToRegisterPage(req, resp);
+        }
+    }
+
+    private void forwardToRegisterPage(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        RequestDispatcher dispatcher = req.getRequestDispatcher("HTML/register.jsp");
         dispatcher.forward(req, resp);
     }
+
 }
 
